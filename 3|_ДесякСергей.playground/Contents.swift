@@ -1,9 +1,9 @@
 import UIKit
 
-struct legkAuto{
-    let typeAuto: String = "Легковой"
+struct newAuto{
+    var typeAuto: String = ""
     var markaAuto: String = ""
-    var dataFromd: String = "01:01:01"
+    var dataFromd: String = ""
     var obiemBagageTotal: Int = 0
     var statusOfenging: stat
     var statusOfwindows: Bool = false
@@ -22,35 +22,34 @@ struct legkAuto{
         case bagage(napr: direction, withWeigth: Int)
         
     }
-    mutating func actEng(activiti: act){
+    mutating func activ(activiti: act){
         switch activiti {
-        case .engine:
+        case .engine(let st):
             self.statusOfenging = st
-            
+        case .window(let win):
+            self.statusOfwindows = win
+        case .bagage(let napr,let  withWeigth):
+            switch napr {
+            case .In:
+                self.obiemBagageUsed += withWeigth
+            case .Out:
+                self.obiemBagageUsed -= withWeigth
+            }
         }
-    mutating func withBagage(directionWithBag: direction, weigth: Int){
-        switch directionWithBag {
-        case .in:
-            self.obiemBagageUsed += weigth
-        case .out:
-            self.obiemBagageUsed -= weigth
-        }
-    }
-    init (marka: String, dataAuto: String,obiemB: Int ){
-        self.obiemBagageTotal = obiemB
-        self.dataFromd = dataAuto
-        self.markaAuto = marka
-        self.statusOfenging = statusOfenging
     }
 
 }
 
-var gaz=legkAuto(marka: "GAZ", dataAuto: "2017", obiemB: 501)
-print(gaz)
-gaz.withBagage(directionWithBag: "In", weigth: 100)
-print(gaz)
-
-
+var legkovaya=newAuto(typeAuto: "Легковой", markaAuto: "GAZ", dataFromd: "2001",obiemBagageTotal: 501, statusOfenging: .On, statusOfwindows: true, obiemBagageUsed: 100)
+print("Автомобиль \(legkovaya.typeAuto) марки \(legkovaya.markaAuto) , дата производства \(legkovaya.dataFromd) год, объем кузова \(legkovaya.obiemBagageTotal) из них использовано \(legkovaya.obiemBagageUsed). Двигатель \(legkovaya.statusOfenging.rawValue)")
+legkovaya.activ(activiti: .bagage(napr: .In, withWeigth: 100) )
+print("Автомобиль \(legkovaya.typeAuto) марки \(legkovaya.markaAuto) , дата производства \(legkovaya.dataFromd) год, объем кузова \(legkovaya.obiemBagageTotal) из них использовано \(legkovaya.obiemBagageUsed). Двигатель \(legkovaya.statusOfenging.rawValue)")
+legkovaya.activ(activiti: .engine(st: .Off))
+print("Автомобиль \(legkovaya.typeAuto) марки \(legkovaya.markaAuto) , дата производства \(legkovaya.dataFromd) год, объем кузова \(legkovaya.obiemBagageTotal) из них использовано \(legkovaya.obiemBagageUsed). Двигатель \(legkovaya.statusOfenging.rawValue)")
+legkovaya.activ(activiti: .window(status: false))
+print("Автомобиль \(legkovaya.typeAuto) марки \(legkovaya.markaAuto) , дата производства \(legkovaya.dataFromd) год, объем кузова \(legkovaya.obiemBagageTotal) из них использовано \(legkovaya.obiemBagageUsed). Двигатель \(legkovaya.statusOfenging.rawValue)")
+var gruzovaya=newAuto(typeAuto: "Грузовой",markaAuto: "MAZ", dataFromd: "1990", obiemBagageTotal: 4000, statusOfenging: .Off, statusOfwindows: false, obiemBagageUsed: 1000)
+print("Автомобиль \(gruzovaya.typeAuto) марки \(gruzovaya.markaAuto) , дата производства \(gruzovaya.dataFromd) год, объем кузова \(gruzovaya.obiemBagageTotal) из них использовано \(gruzovaya.obiemBagageUsed). Двигатель \(gruzovaya.statusOfenging.rawValue)")
 
 
 
