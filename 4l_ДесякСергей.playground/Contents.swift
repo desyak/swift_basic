@@ -4,91 +4,124 @@ class newAuto{
     var typeAuto: String = ""
     var markaAuto: String = ""
     var dataFromd: String = ""
-    var obiemBagageTotal: Int = 0
     var statusOfenging: stat
     var statusOfwindows: Bool = false
-    var obiemBagageUsed: Int = 0
     enum stat: String {
         case On = "Working"
         case Off = "Not Working"
     }
-    enum direction{
-        case In
-        case Out
-    }
+
     enum act {
         case engine(st: stat)
         case window(status: Bool)
-        case bagage(napr: direction, withWeigth: Int)
         
     }
-    init(typeAuto: String, markaAuto: String, dataFromd: String, obiemBagageTotal: Int, statusOfenging: stat, statusOfwindows: Bool,obiemBagageUsed: Int) {
+    init(typeAuto: String, markaAuto: String, dataFromd: String, statusOfenging: stat, statusOfwindows: Bool) {
             self.typeAuto=typeAuto
             self.markaAuto=markaAuto
             self.dataFromd=dataFromd
-            self.obiemBagageTotal=obiemBagageTotal
+        //    self.obiemBagageTotal=obiemBagageTotal
             self.statusOfenging=statusOfenging
             self.statusOfwindows=statusOfwindows
-            self.obiemBagageUsed=obiemBagageUsed
+       //     self.obiemBagageUsed=obiemBagageUsed
         
     }
     func activ(activiti: act){
         switch activiti {
         case .engine(let st):
-            self.statusOfenging = st
+            statusOfenging = st
         case .window(let win):
-            self.statusOfwindows = win
-        case .bagage(let napr,let  withWeigth):
-            switch napr {
-            case .In:
-                self.obiemBagageUsed += withWeigth
-            case .Out:
-                self.obiemBagageUsed -= withWeigth
-            }
+            statusOfwindows = win
         }
     }
     
 }
-class trunkCar: newAuto {
-    var curentSpeed: Int = 0
+
+class sportCar: newAuto {
+    var currentSpeed: Int = 0
+    var Spoiler: spoilerStatus
     enum naprSpeed {
-        case Up, Down
+        case Up
+        case Down
     }
-    
-    enum act {
-        case engine(st: stat)
-        case window(status: Bool)
+    enum spoilerStatus: String {
+        case active = "Активирован"
+        case not_active = "Не активирован"
+    }
+    enum actSport {
+        case setSpoiler(spStat: spoilerStatus)
         case speed(napr: naprSpeed, speedValue: Int)
         
     }
-    override func activ(activiti: act){
+    init(typeAuto: String, markaAuto: String, dataFromd: String,  statusOfenging: stat, statusOfwindows: Bool, currentSpeed: Int, Spoiler: spoilerStatus) {
+        self.currentSpeed=currentSpeed
+        self.Spoiler=Spoiler
+        super.init(typeAuto: typeAuto, markaAuto: markaAuto, dataFromd: dataFromd, statusOfenging: statusOfenging, statusOfwindows: statusOfwindows)
+
+    }
+    
+    func activSport(activiti: actSport){
         switch activiti {
-        case .engine(let st):
-            self.statusOfenging = st
-        case .window(let win):
-            self.statusOfwindows = win
-        case .speed(let napr,let  speedValue):
-            switch napr {
-            case .Up:
-                self.curentSpeed += speedValue
-            case .Down:
-                self.curentSpeed -= speedValue
+            case .setSpoiler(let spStat):
+                Spoiler=spStat
+            case .speed(let napr,let  speedValue):
+                switch napr {
+                case .Up:
+                    currentSpeed += speedValue
+                case .Down:
+                    currentSpeed -= speedValue
             }
         }
     }
 }
-var legkovaya=newAuto(typeAuto: "Легковой", markaAuto: "GAZ", dataFromd: "2001",obiemBagageTotal: 501, statusOfenging: .On, statusOfwindows: true, obiemBagageUsed: 100)
-print("Автомобиль \(legkovaya.typeAuto) марки \(legkovaya.markaAuto) , дата производства \(legkovaya.dataFromd) год, объем кузова \(legkovaya.obiemBagageTotal) из них использовано \(legkovaya.obiemBagageUsed). Двигатель \(legkovaya.statusOfenging.rawValue)")
-legkovaya.activ(activiti: .bagage(napr: .In, withWeigth: 100) )
-print("Автомобиль \(legkovaya.typeAuto) марки \(legkovaya.markaAuto) , дата производства \(legkovaya.dataFromd) год, объем кузова \(legkovaya.obiemBagageTotal) из них использовано \(legkovaya.obiemBagageUsed). Двигатель \(legkovaya.statusOfenging.rawValue)")
-legkovaya.activ(activiti: .engine(st: .Off))
-print("Автомобиль \(legkovaya.typeAuto) марки \(legkovaya.markaAuto) , дата производства \(legkovaya.dataFromd) год, объем кузова \(legkovaya.obiemBagageTotal) из них использовано \(legkovaya.obiemBagageUsed). Двигатель \(legkovaya.statusOfenging.rawValue)")
-legkovaya.activ(activiti: .window(status: false))
-print("Автомобиль \(legkovaya.typeAuto) марки \(legkovaya.markaAuto) , дата производства \(legkovaya.dataFromd) год, объем кузова \(legkovaya.obiemBagageTotal) из них использовано \(legkovaya.obiemBagageUsed). Двигатель \(legkovaya.statusOfenging.rawValue)")
-var gruzovaya=newAuto(typeAuto: "Грузовой",markaAuto: "MAZ", dataFromd: "1990", obiemBagageTotal: 4000, statusOfenging: .Off, statusOfwindows: false, obiemBagageUsed: 1000)
-print("Автомобиль \(gruzovaya.typeAuto) марки \(gruzovaya.markaAuto) , дата производства \(gruzovaya.dataFromd) год, объем кузова \(gruzovaya.obiemBagageTotal) из них использовано \(gruzovaya.obiemBagageUsed). Двигатель \(gruzovaya.statusOfenging.rawValue)")
 
+class truckCar: newAuto {
+    var obiemBagageTotal: Int = 0
+    var obiemBagageUsed: Int = 0
+    enum direction{
+        case In
+        case Out
+    }
+    
+    enum actTruck {
+        case bagage(napr: direction, withWeigth: Int)
+        
+    }
+    init(typeAuto: String, markaAuto: String, dataFromd: String,  statusOfenging: stat, statusOfwindows: Bool,  obiemBagageTotal: Int, obiemBagageUsed: Int) {
+        self.obiemBagageTotal=obiemBagageTotal
+        self.obiemBagageUsed=obiemBagageUsed
+        super.init(typeAuto: typeAuto, markaAuto: markaAuto, dataFromd: dataFromd, statusOfenging: statusOfenging, statusOfwindows: statusOfwindows)
 
+    }
+    
+    func activTruck(activiti: actTruck){
+        switch activiti {
+        case .bagage(let napr,let  withWeigth):
+            switch napr {
+            case .In:
+                obiemBagageUsed += withWeigth
+            case .Out:
+                obiemBagageUsed -= withWeigth
+            }
+        
+        }
+    }
+}
+var legkovaya=newAuto(typeAuto: "Легковой", markaAuto: "GAZ", dataFromd: "2001", statusOfenging: .On, statusOfwindows: true)
+print("Автомобиль \(legkovaya.typeAuto) марки \(legkovaya.markaAuto) , дата производства \(legkovaya.dataFromd) год. Двигатель \(legkovaya.statusOfenging.rawValue)")
 
+var truckAuto = truckCar(typeAuto: "Грузовой", markaAuto: "Kraz", dataFromd: "1999", statusOfenging: .Off, statusOfwindows: false, obiemBagageTotal: 4000
+    , obiemBagageUsed: 1000)
+print("Автомобиль \(truckAuto.typeAuto) марки \(truckAuto.markaAuto) , дата производства \(truckAuto.dataFromd) год, объем кузова \(truckAuto.obiemBagageTotal) из них использовано \(truckAuto.obiemBagageUsed). Двигатель \(truckAuto.statusOfenging.rawValue)")
+truckAuto.activ(activiti: .engine(st: .Off))
+truckAuto.activTruck(activiti: .bagage(napr: .In, withWeigth: 1000) )
+print("Автомобиль \(truckAuto.typeAuto) марки \(truckAuto.markaAuto) , дата производства \(truckAuto.dataFromd) год, объем кузова \(truckAuto.obiemBagageTotal) из них использовано \(truckAuto.obiemBagageUsed). Двигатель \(truckAuto.statusOfenging.rawValue)")
+truckAuto.activ(activiti: .window(status: false))
+
+var SportCar=sportCar(typeAuto: "Легковой", markaAuto: "McLaren", dataFromd: "2005", statusOfenging: .On, statusOfwindows: true, currentSpeed: 100, Spoiler: .active)
+print("Автомобиль \(SportCar.typeAuto) марки \(SportCar.markaAuto) , дата производства \(SportCar.dataFromd) год, скорость \(SportCar.currentSpeed). Двигатель \(SportCar.statusOfenging.rawValue). Спойлер \(SportCar.Spoiler.rawValue)")
+SportCar.activSport(activiti: .setSpoiler(spStat: .not_active))
+SportCar.activSport(activiti: .speed(napr: .Up, speedValue: 100))
+print("Автомобиль \(SportCar.typeAuto) марки \(SportCar.markaAuto) , дата производства \(SportCar.dataFromd) год, скорость \(SportCar.currentSpeed). Двигатель \(SportCar.statusOfenging.rawValue). Спойлер \(SportCar.Spoiler.rawValue)")
 
 
