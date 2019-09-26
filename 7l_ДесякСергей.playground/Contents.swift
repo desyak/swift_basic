@@ -26,7 +26,7 @@ class gasStation {
             throw possibleErrors.theryMatchLiters
         }
         guard (item.price*liters) <= deposite else {
-            throw possibleErrors.notEnoughMoney(moneyNeeded: item.price - deposite)
+            throw possibleErrors.notEnoughMoney(moneyNeeded: item.price*liters - deposite)
         }
         deposite -= item.price
         var newItem = item
