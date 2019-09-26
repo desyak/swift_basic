@@ -29,8 +29,10 @@ for _ in 1...91 {
 }
 print(new_array1)
 
+
 var new_array2 = [Int] (2...100)
 var  p = new_array2.first
+
 
 for (i,_) in new_array2.enumerated() {
     
